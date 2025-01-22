@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Personalizado - Opções Binárias</title>
+    <style>
+        /* CSS Personalizado */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-image: url('https://www.example.com/background-image.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #f1c40f;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #dcdcdc;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        form label {
+            color: #dcdcdc;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #34495e;
+        }
+
+        input[type="number"], input[type="email"], input[type="text"] {
+            background-color: #2c3e50;
+        }
+
+        button {
+            background-color: #e74c3c;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #34495e;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #34495e;
+        }
+
+        tr:hover {
+            background-color: #2c3e50;
+        }
+
+        .countdown {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Animação para elementos */
+        .fade-in {
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <!-- Formulário de Cadastro -->
+        <h1>Cadastro de Usuário</h1>
+        <form id="userForm">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" name="nome" required placeholder="Digite seu nome">
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Digite seu email">
+            
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <!-- Calculadora de Risco -->
+        <h1>Calculadora de Risco</h1>
+        <form id="riskCalculator">
+            <label for="capital">Capital Total (R$)</label>
+            <input type="number" id="capital" name="capital" required placeholder="Digite seu capital">
+            
+            <label for="risco">Percentual de Risco (%)</label>
+            <input type="number" id="risco" name="risco" required placeholder="Digite o percentual de risco">
+            
+            <button type="submit">Calcular</button>
+        </form>
+        <p id="resultado"></p>
+
+        <!-- Tabela de Estratégias -->
+        <h1>Estratégias</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Estratégia</th>
+                    <th>Descrição</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Martingale</td>
+                    <td>Aumentar o investimento após perda</td>
+                    <td>Risco alto</td>
+                </tr>
+                <tr>
+                    <td>Stop Loss</td>
+                    <td>Limitar perdas</td>
+                    <td>Risco moderado</td>
+                </tr>
+                <tr>
+                    <td>Trailing Stop</td>
+                    <td>Proteger ganhos</td>
+                    <td>Risco baixo</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Contador Regressivo -->
+        <div class="countdown" id="timer">05:00</div>
+
+        <script>
+            // Validação de Formulário
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                if (nome === '' || email === '') {
+                    alert('Preencha todos os campos!');
+                } else {
+                    alert('Usuário cadastrado com sucesso!');
+                }
+            });
+
+            // Calculadora de Risco
+            document.getElementById('riskCalculator').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const capital = parseFloat(document.getElementById('capital').value);
+                const risco = parseFloat(document.getElementById('risco').value);
+                if (!capital || !risco || capital <= 0 || risco <= 0) {
+                    alert('Insira valores válidos.');
+                } else {
+                    const valorRisco = (capital * (risco / 100)).toFixed(2);
+                    document.getElementById('resultado').innerText = `Você deve arriscar no máximo R$${valorRisco}.`;
+                }
+            });
+
+            // Timer de Contagem Regressiva
+            function startCountdown(duration, display) {
+                let timer = duration, minutes, seconds;
+                setInterval(function () {
+                    minutes = Math.floor(timer / 60);
+                    seconds = timer % 60;
+                    display.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                    if (--timer < 0) display.textContent = 'Tempo esgotado!';
+                }, 1000);
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const display = document.getElementById('timer');
+                startCountdown(5 * 60, display);
+            });
+        </script>
+    </div>
+</body>
+</html>

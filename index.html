@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Completo</title>
+    <style>
+        /* CSS Estilizado */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .form-container, .calculator-container, .table-container, #countdown-container {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        form label, p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        form input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f4f4f9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Formulário de Cadastro -->
+    <div class="form-container">
+        <h1>Cadastro de Usuários</h1>
+        <form id="userForm">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <!-- Calculadora de Risco -->
+    <div class="calculator-container">
+        <h1>Calculadora de Risco</h1>
+        <form id="riskCalculator">
+            <label for="capital">Capital Total (R$)</label>
+            <input type="number" id="capital" name="capital" required>
+            <label for="risco">Percentual de Risco (%)</label>
+            <input type="number" id="risco" name="risco" required>
+            <button type="submit">Calcular</button>
+        </form>
+        <p id="resultado"></p>
+    </div>
+
+    <!-- Tabela de Estratégias -->
+    <div class="table-container">
+        <h1>Estratégias</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Estratégia</th>
+                    <th>Descrição</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Martingale</td>
+                    <td>Aumentar o investimento após perda</td>
+                    <td>Risco alto</td>
+                </tr>
+                <tr>
+                    <td>Stop Loss</td>
+                    <td>Limitar perdas</td>
+                    <td>Risco moderado</td>
+                </tr>
+                <tr>
+                    <td>Trailing Stop</td>
+                    <td>Proteger ganhos</td>
+                    <td>Risco baixo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Contador Regressivo -->
+    <div id="countdown-container">
+        <h1>Promoção termina em:</h1>
+        <p id="timer">05:00</p>
+    </div>
+
+    <!-- Gráfico Dinâmico (Placeholder) -->
+    <canvas id="resultChart" width="400" height="200"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Validação de Formulário
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            if (nome === '' || email === '') {
+                alert('Preencha todos os campos!');
+            } else {
+                alert('Usuário cadastrado com sucesso!');
+            }
+        });
+
+        // Calculadora de Risco
+        document.getElementById('riskCalculator').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const capital = parseFloat(document.getElementById('capital').value);
+            const risco = parseFloat(document.getElementById('risco').value);
+            if (!capital || !risco || capital <= 0 || risco <= 0) {
+                alert('Insira valores válidos.');
+            } else {
+                const valorRisco = (capital * (risco / 100)).toFixed(2);
+                document.getElementById('resultado').innerText = `Você deve arriscar no máximo R$${valorRisco}.`;
+            }
+        });
+
+        // Tabela Interativa
+        document.querySelectorAll('table tbody tr').forEach(function(row) {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#dfe6e9';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+            });
+        });
+
+        // Timer de Contagem Regressiva
+        function startCountdown(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+                display.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (--timer < 0) display.textContent = 'Tempo esgotado!';
+            }, 1000);
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const display = document.getElementById('timer');
+            startCountdown(5 * 60, display);
+        });
+
+        // Gráfico Dinâmico
+        const ctx = document.getElementById('resultChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Dia 1', 'Dia 2', 'Dia 3'],
+                datasets: [{
+                    label: 'Ganhos (R$)',
+                    data: [200, 300, 150],
+                    borderColor: 'blue',
+                    borderWidth: 2
+                }]
+            },
+            options: { responsive: true }
+        });
+    </script>
+</body>
+</html>
